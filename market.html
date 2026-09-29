@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시장조사 아카이브</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;600&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --ground:#F1F3F1;
+    --surface:#FFFFFF;
+    --surface-2:#F7F9F7;
+    --ink:#17211D;
+    --ink-soft:#5C6A63;
+    --ink-faint:#8D9891;
+    --line:#DCE3DE;
+    --line-strong:#C4CFC8;
+    --grid:#E8EDE9;
+    --accent:#1D6B4F;
+    --accent-deep:#12513B;
+    --accent-soft:#E1EEE7;
+    --mark:#8F5C08;
+    --mark-soft:#F5EAD3;
+    --danger:#9E3A22;
+    --card-shadow: 0 1px 2px rgba(23,33,29,.05), 0 14px 30px -22px rgba(23,33,29,.45);
+    --focus:#1D6B4F;
+    --on-accent:#FFFFFF;
+    --f-display:"Hahmlet",'Nanum Myeongjo',serif;
+    --f-body:"IBM Plex Sans KR",'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    --f-mono:"IBM Plex Mono",ui-monospace,'SFMono-Regular',Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --ground:#101412;
+      --surface:#191E1B;
+      --surface-2:#1F2622;
+      --ink:#E7EDE9;
+      --ink-soft:#9CAAA2;
+      --ink-faint:#78857D;
+      --line:#2A322D;
+      --line-strong:#3A443E;
+      --grid:#242B27;
+      --accent:#63C295;
+      --accent-deep:#8FD8B4;
+      --accent-soft:#16291F;
+      --mark:#D9A748;
+      --mark-soft:#2C2415;
+      --danger:#E0836A;
+      --card-shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 32px -24px rgba(0,0,0,.9);
+      --focus:#63C295;
+      --on-accent:#0C130F;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --ground:#101412;
+    --surface:#191E1B;
+    --surface-2:#1F2622;
+    --ink:#E7EDE9;
+    --ink-soft:#9CAAA2;
+    --ink-faint:#78857D;
+    --line:#2A322D;
+    --line-strong:#3A443E;
+    --grid:#242B27;
+    --accent:#63C295;
+    --accent-deep:#8FD8B4;
+    --accent-soft:#16291F;
+    --mark:#D9A748;
+    --mark-soft:#2C2415;
+    --danger:#E0836A;
+    --card-shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 32px -24px rgba(0,0,0,.9);
+    --focus:#63C295;
+    --on-accent:#0C130F;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--f-body);
+    font-weight:400;
+    font-size:15px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding-inline:20px;
+    padding-block:30px 60px;
+  }
+  @media (max-width:520px){ body{padding-inline:16px} }
+  .wrap{max-width:1160px;margin:0 auto}
+  a{color:var(--accent-deep)}
+
+  /* ---------- 머리말 ---------- */
+  .masthead{
+    display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+    gap:18px 28px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--line-strong);
+  }
+  .eyebrow{
+    font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-faint);margin:0 0 6px;
+  }
+  h1{
+    font-family:var(--f-display);font-weight:600;font-size:clamp(28px,4.4vw,40px);
+    line-height:1.1;letter-spacing:-.01em;margin:0;text-wrap:balance;
+  }
+  .ledger{
+    display:flex;flex-wrap:wrap;gap:0 22px;align-items:baseline;
+    font-family:var(--f-mono);font-size:12.5px;color:var(--ink-soft);
+    font-variant-numeric:tabular-nums;
+  }
+  .ledger b{color:var(--ink);font-weight:500;font-size:16px}
+  .ledger .unit{color:var(--ink-faint)}
+
+  /* ---------- 본문 배치 ---------- */
+  .layout{
+    display:grid;grid-template-columns:minmax(0,330px) minmax(0,1fr);
+    gap:30px;align-items:start;margin-top:26px;
+  }
+  @media (max-width:900px){ .layout{grid-template-columns:minmax(0,1fr);gap:26px} }
+
+  /* ---------- 기록 쓰기 ---------- */
+  .composer{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:var(--card-shadow);
+    padding:20px;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  @media (min-width:901px){ .composer{position:sticky;top:24px} }
+  .composer[data-editing="1"]{border-color:var(--accent);box-shadow:var(--card-shadow),0 0 0 1px var(--accent)}
+  .composer-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .composer-head h2{
+    font-family:var(--f-display);font-weight:500;font-size:19px;margin:0;letter-spacing:-.01em;
+  }
+  .field{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,92px);gap:10px}
+  label{
+    font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+  label .opt{text-transform:none;letter-spacing:0}
+  input[type="text"],input[type="date"],input[type="search"],input[type="url"],textarea,select{
+    width:100%;font-family:inherit;font-size:14.5px;color:var(--ink);
+    background:var(--surface-2);
+    border:1px solid var(--line);border-radius:3px;
+    padding:9px 11px;line-height:1.55;
+  }
+  input[type="date"],#value-input{font-family:var(--f-mono);font-size:13.5px}
+  textarea{min-height:96px;resize:vertical}
+  input::placeholder,textarea::placeholder{color:var(--ink-faint)}
+  input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible,.chip:focus-visible{
+    outline:2px solid var(--focus);outline-offset:2px;
+  }
+  input:focus,textarea:focus{border-color:var(--line-strong);background:var(--surface)}
+  .field-note{font-size:12px;color:var(--ink-faint);margin:0}
+
+  .composer-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  button{
+    font-family:inherit;font-size:14px;cursor:pointer;border-radius:3px;
+    border:1px solid transparent;background:none;color:inherit;
+  }
+  .btn-primary{
+    background:var(--accent);color:var(--on-accent);border-color:var(--accent);
+    padding:9px 18px;font-weight:500;letter-spacing:-.01em;
+  }
+  .btn-primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+  .btn-primary:disabled{opacity:.6;cursor:default}
+  .btn-quiet{color:var(--ink-soft);padding:8px 12px;border-color:var(--line)}
+  .btn-quiet:hover{color:var(--ink);border-color:var(--line-strong)}
+  .hint{font-family:var(--f-mono);font-size:11px;color:var(--ink-faint)}
+  .status{font-family:var(--f-mono);font-size:11.5px;min-height:17px;color:var(--ink-soft)}
+  .status[data-tone="err"]{color:var(--danger)}
+  .status[data-tone="ok"]{color:var(--accent)}
+
+  /* ---------- 보기 전환 · 도구 막대 ---------- */
+  .viewbar{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;
+    border-bottom:1px solid var(--line);margin-bottom:14px;
+  }
+  .tabs{display:flex;gap:4px}
+  .tab{
+    padding:9px 12px 10px;font-size:14px;color:var(--ink-soft);
+    border-radius:0;border-bottom:2px solid transparent;margin-bottom:-1px;
+  }
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--ink);font-weight:500;border-bottom-color:var(--accent)}
+  .io{display:flex;gap:6px;padding-bottom:6px}
+  .io button{font-family:var(--f-mono);font-size:11.5px;padding:6px 10px}
+
+  .toolbar{display:flex;flex-direction:column;gap:12px;margin-bottom:6px}
+  .searchbox{position:relative}
+  .searchbox input{padding-left:32px}
+  .searchbox svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink-faint)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{
+    font-family:var(--f-body);font-size:12.5px;line-height:1;
+    padding:6px 11px;border-radius:999px;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
+  }
+  .chip:hover{border-color:var(--line-strong);color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-deep)}
+  .chip .n{font-family:var(--f-mono);font-size:11px;color:var(--ink-faint);margin-left:5px}
+
+  /* ---------- 지표 추이 ---------- */
+  .market-head{
+    display:flex;align-items:baseline;gap:10px;margin:26px 0 10px;
+    padding-bottom:7px;border-bottom:1px solid var(--line-strong);
+  }
+  .market-head:first-child{margin-top:14px}
+  .market-head h3{font-family:var(--f-display);font-size:17px;font-weight:500;margin:0}
+  .market-head .count{margin-left:auto;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint)}
+
+  .series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:14px}
+  .series{
+    background:var(--surface);border:1px solid var(--line);border-radius:4px;
+    padding:14px 14px 10px;display:flex;flex-direction:column;gap:8px;min-width:0;
+  }
+  .series[data-sample="1"]{opacity:.78}
+  .series-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .series-name{font-weight:600;font-size:14.5px;margin:0;line-height:1.35}
+  .series-span{font-family:var(--f-mono);font-size:11px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .series-toggle{font-family:var(--f-mono);font-size:11px;color:var(--ink-faint);padding:3px 6px;flex:none}
+  .series-toggle:hover{color:var(--ink)}
+  .hero{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
+  .hero .v{font-family:var(--f-mono);font-size:24px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .hero .u{font-size:13px;color:var(--ink-soft)}
+  .delta{font-family:var(--f-mono);font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .delta .since{color:var(--ink-faint)}
+
+  .chart{position:relative;width:100%;height:150px}
+  .chart svg{display:block;width:100%;height:100%;overflow:visible}
+  .chart .axis{font-family:var(--f-mono);font-size:10.5px;fill:var(--ink-faint)}
+  .chart .gridline{stroke:var(--grid);stroke-width:1}
+  .chart .baseline{stroke:var(--line-strong);stroke-width:1}
+  .chart .line{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  .chart .dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+  .chart .dot-last{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+  .chart .cross{stroke:var(--ink-faint);stroke-width:1;stroke-dasharray:2 3}
+  .chart .hit{fill:transparent;cursor:crosshair}
+  .chart .label-last{font-family:var(--f-mono);font-size:11px;fill:var(--ink);font-weight:500}
+  .tip{
+    position:absolute;pointer-events:none;z-index:2;
+    background:var(--ink);color:var(--ground);border-radius:3px;
+    padding:6px 9px;font-size:12px;line-height:1.45;white-space:nowrap;
+    transform:translate(-50%,calc(-100% - 10px));
+  }
+  .tip b{font-family:var(--f-mono);font-weight:500}
+  .tip .s{opacity:.72;font-size:11px}
+
+  .series-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .series-table th,.series-table td{padding:5px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  .series-table th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-faint);font-weight:400}
+  .series-table td.num{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .series-table th.num{text-align:right}
+  .series-table td.src{color:var(--ink-soft);word-break:break-word}
+
+  /* ---------- 기록 타임라인 ---------- */
+  .monthgroup{margin-top:26px}
+  .monthgroup:first-child{margin-top:14px}
+  .monthhead{
+    display:flex;align-items:baseline;gap:10px;
+    padding-bottom:7px;border-bottom:1px solid var(--line-strong);
+  }
+  .monthhead .d{font-family:var(--f-display);font-size:17px;font-weight:500}
+  .monthhead .count{margin-left:auto;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint)}
+
+  .entry{
+    display:grid;grid-template-columns:78px minmax(0,1fr);gap:0 14px;
+    padding:14px 10px 14px 0;border-bottom:1px solid var(--line);
+  }
+  .entry:hover{background:var(--surface-2)}
+  .entry .when{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums;padding-top:3px}
+  .entry .what{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0 0 3px}
+  .entry .mk{font-size:12px;color:var(--ink-soft)}
+  .entry h3{font-weight:600;font-size:15px;margin:0;letter-spacing:-.005em}
+  .entry .val{font-family:var(--f-mono);font-size:14px;font-weight:500;font-variant-numeric:tabular-nums}
+  .entry .text{white-space:pre-wrap;word-break:break-word;color:var(--ink-soft);margin:4px 0 0;font-weight:300}
+  .entry .src{font-size:12.5px;color:var(--ink-faint);margin-top:4px;word-break:break-word}
+  .entry mark{background:var(--mark-soft);color:var(--mark);border-radius:2px;padding:0 2px}
+  .entry-meta{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:9px}
+  .tag{font-size:12px;line-height:1;padding:4px 9px;border-radius:2px;background:var(--accent-soft);color:var(--accent-deep)}
+  .entry-actions{margin-left:auto;display:flex;gap:2px;opacity:0;transition:opacity .12s}
+  .entry:hover .entry-actions,.entry:focus-within .entry-actions{opacity:1}
+  @media (hover:none){ .entry-actions{opacity:1} }
+  .entry-actions button{font-family:var(--f-mono);font-size:11px;color:var(--ink-faint);padding:4px 7px}
+  .entry-actions button:hover{color:var(--ink)}
+  .entry-actions button.del:hover{color:var(--danger)}
+  .entry[data-sample="1"]{opacity:.72}
+  .entry[data-sample="1"] .entry-actions{display:none}
+  @media (max-width:520px){
+    .entry{grid-template-columns:minmax(0,1fr)}
+    .entry .when{padding-top:0;margin-bottom:3px}
+  }
+
+  .sample-note{
+    display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+    margin-top:14px;padding:11px 13px;border:1px dashed var(--line-strong);border-radius:3px;
+    color:var(--ink-soft);font-size:13px;background:var(--surface-2);
+  }
+  .sample-note .badge{
+    font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    background:var(--mark-soft);color:var(--mark);padding:3px 7px;border-radius:2px;
+  }
+  .empty{padding:36px 4px;color:var(--ink-faint);font-size:14px}
+
+  .colophon{
+    margin-top:40px;padding-top:14px;border-top:1px solid var(--line);
+    font-family:var(--f-mono);font-size:11px;color:var(--ink-faint);
+    display:flex;flex-wrap:wrap;gap:6px 16px;
+  }
+  .colophon a{color:var(--ink-soft)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">Market Research Archive</p>
+      <h1>시장조사 아카이브</h1>
+    </div>
+    <div class="ledger">
+      <div><b id="stat-total">0</b> <span class="unit">건 기록</span></div>
+      <div><b id="stat-series">0</b> <span class="unit">개 지표 추적</span></div>
+      <div><b id="stat-month">0</b> <span class="unit">건 이번 달</span></div>
+      <div><b id="stat-span">–</b> <span class="unit">축적 기간</span></div>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- 조사 기록 쓰기 -->
+    <section class="composer" id="composer" aria-labelledby="composer-title">
+      <div class="composer-head">
+        <h2 id="composer-title">조사 기록 추가</h2>
+        <button type="button" class="btn-quiet" id="cancel-edit" hidden>수정 취소</button>
+      </div>
+
+      <div class="field">
+        <label for="date-input">기준일</label>
+        <input type="date" id="date-input">
+        <p class="field-note">수치가 가리키는 날짜입니다. 조사한 날이 아니라 자료의 기준 시점을 적으세요.</p>
+      </div>
+
+      <div class="field">
+        <label for="market-input">시장 · 주제</label>
+        <input type="text" id="market-input" list="market-list" placeholder="예) 국내 전기차" autocomplete="off">
+        <datalist id="market-list"></datalist>
+      </div>
+
+      <div class="field">
+        <label for="metric-input">지표 <span class="opt">(선택)</span></label>
+        <input type="text" id="metric-input" list="metric-list" placeholder="예) 월 판매량" autocomplete="off">
+        <datalist id="metric-list"></datalist>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="value-input">값 <span class="opt">(선택)</span></label>
+          <input type="text" id="value-input" inputmode="decimal" placeholder="예) 12,480">
+        </div>
+        <div class="field">
+          <label for="unit-input">단위</label>
+          <input type="text" id="unit-input" list="unit-list" placeholder="대" autocomplete="off">
+          <datalist id="unit-list"></datalist>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="source-input">출처</label>
+        <input type="text" id="source-input" list="source-list" placeholder="예) 산업통상자원부 월간 동향" autocomplete="off">
+        <datalist id="source-list"></datalist>
+        <input type="url" id="url-input" placeholder="https:// (선택)" aria-label="출처 링크">
+      </div>
+
+      <div class="field">
+        <label for="note-input">메모 · 해석 <span class="opt">(선택)</span></label>
+        <textarea id="note-input" placeholder="왜 이렇게 움직였는지, 경쟁사 동향, 다음에 확인할 것."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="tags-input">태그</label>
+        <input type="text" id="tags-input" placeholder="쉼표로 구분 · 예) 수요, 가격">
+      </div>
+
+      <div class="composer-foot">
+        <button type="button" class="btn-primary" id="save-btn">기록 저장</button>
+        <span class="hint">⌘/Ctrl + Enter</span>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <!-- 보기 -->
+    <section aria-label="조사 기록 보기">
+      <div class="viewbar">
+        <div class="tabs" role="tablist">
+          <button type="button" class="tab" role="tab" id="tab-trend" aria-selected="true" data-view="trend">지표 추이</button>
+          <button type="button" class="tab" role="tab" id="tab-log" aria-selected="false" data-view="log">기록 타임라인</button>
+        </div>
+        <div class="io">
+          <button type="button" class="btn-quiet" id="export-btn">CSV 내보내기</button>
+          <button type="button" class="btn-quiet" id="import-btn">CSV 가져오기</button>
+          <input type="file" id="import-file" accept=".csv,text/csv" hidden>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="searchbox">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M10.6 10.6 14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <input type="search" id="search-input" placeholder="시장 · 지표 · 출처 · 메모 · 태그 검색" aria-label="조사 기록 검색">
+        </div>
+        <div class="chips" id="market-filters"></div>
+      </div>
+
+      <div id="view"></div>
+    </section>
+
+  </div>
+
+  <p class="colophon">
+    <span id="storage-note">저장 위치 확인 중</span>
+    <span>CSV로 내보내 두면 다른 곳에도 쌓아 둘 수 있습니다</span>
+    <a href="index.html">업무일지로 가기</a>
+  </p>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var LS_KEY = "market-research:records:v1";
+  var LS_MIG = "market-research:migrated:v1";
+  var LS_VIEW = "market-research:view";
+  var COLL = "research";
+
+  var records = [];   // {id,date,market,metric,value(number|null),unit,source,url,note,tags[],createdAt,updatedAt}
+  var db = null;
+  var editingId = null;
+  var q = "";
+  var activeMarket = null;
+  var view = "trend";
+  var openTables = {};
+
+  var $ = function(id){ return document.getElementById(id); };
+  var NF = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 2 });
+
+  /* ---------- 날짜 ---------- */
+  function pad(n){ return n < 10 ? "0" + n : "" + n; }
+  function iso(d){ return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate()); }
+  function today(){ return iso(new Date()); }
+  function parseISO(s){
+    var p = String(s || "").split("-");
+    return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+  }
+  function isISO(s){ return /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(parseISO(s).getTime()); }
+  function shiftMonths(s, n){
+    var d = parseISO(s); d.setDate(1); d.setMonth(d.getMonth() + n); return iso(d);
+  }
+  function monthLabel(ym){
+    var p = ym.split("-");
+    return p[0] + "년 " + Number(p[1]) + "월";
+  }
+  function shortDate(s){ return s.slice(2).replace(/-/g, "."); }
+  function spanLabel(a, b){
+    var da = parseISO(a), dbb = parseISO(b);
+    var m = (dbb.getFullYear() - da.getFullYear()) * 12 + (dbb.getMonth() - da.getMonth());
+    if (m >= 12) return Math.floor(m / 12) + "년" + (m % 12 ? " " + (m % 12) + "개월" : "");
+    if (m >= 1) return m + "개월";
+    return Math.round((dbb - da) / 864e5) + 1 + "일";
+  }
+
+  /* ---------- 숫자 ---------- */
+  function parseValue(s){
+    var t = String(s == null ? "" : s).replace(/\s/g, "");
+    if (!t) return null;
+    // 쉼표는 천 단위 구분일 때만 허용 (2,35 같은 소수 쉼표는 거절)
+    if (t.indexOf(",") !== -1) {
+      if (!/^[-+]?\d{1,3}(,\d{3})+(\.\d+)?$/.test(t)) return NaN;
+      t = t.replace(/,/g, "");
+    }
+    var n = Number(t);
+    return isFinite(n) ? n : NaN;
+  }
+  function fmt(n){ return NF.format(n); }
+  function signed(n){ return (n > 0 ? "+" : n < 0 ? "−" : "±") + fmt(Math.abs(n)); }
+
+  /* ---------- 저장소: 로컬 ---------- */
+  function localRead(){
+    try {
+      var raw = window.localStorage.getItem(LS_KEY);
+      if (!raw) return [];
+      var v = JSON.parse(raw);
+      return Array.isArray(v) ? v.map(normalize) : [];
+    } catch (e) { return []; }
+  }
+  function localWrite(list){
+    try { window.localStorage.setItem(LS_KEY, JSON.stringify(list.map(plain))); return true; }
+    catch (e) { return false; }
+  }
+
+  function normalize(v){
+    v = v || {};
+    var val = typeof v.value === "number" && isFinite(v.value) ? v.value : null;
+    return {
+      id: String(v.id || ""), date: isISO(v.date) ? v.date : today(),
+      market: String(v.market || "").trim(), metric: String(v.metric || "").trim(),
+      value: val, unit: String(v.unit || "").trim(),
+      source: String(v.source || "").trim(), url: String(v.url || "").trim(),
+      note: String(v.note || ""), tags: Array.isArray(v.tags) ? v.tags.map(String) : [],
+      createdAt: Number(v.createdAt) || 0, updatedAt: Number(v.updatedAt) || 0
+    };
+  }
+  function plain(r){
+    return { id: r.id, date: r.date, market: r.market, metric: r.metric, value: r.value, unit: r.unit,
+             source: r.source, url: r.url, note: r.note, tags: r.tags,
+             createdAt: r.createdAt, updatedAt: r.updatedAt };
+  }
+  function body(r){ var p = plain(r); delete p.id; return p; }
+
+  function sortRecords(list){
+    return list.slice().sort(function(a,b){
+      if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+      return (b.createdAt || 0) - (a.createdAt || 0);
+    });
+  }
+
+  /* ---------- 쓰기 ---------- */
+  function newId(){
+    if (db) { try { return db.collection(COLL).doc().id; } catch (e) {} }
+    return "r" + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+  }
+
+  function putMany(list){
+    if (db) {
+      return Promise.all(list.map(function(r){ return db.doc(COLL + "/" + r.id).set(body(r)); }));
+    }
+    var byId = {};
+    records.forEach(function(r){ byId[r.id] = r; });
+    list.forEach(function(r){ byId[r.id] = r; });
+    records = sortRecords(Object.keys(byId).map(function(k){ return byId[k]; }));
+    var ok = localWrite(records);
+    render();
+    return ok ? Promise.resolve() : Promise.reject({ code: "local_full" });
+  }
+
+  function drop(id){
+    if (db) return db.doc(COLL + "/" + id).delete();
+    records = records.filter(function(r){ return r.id !== id; });
+    localWrite(records);
+    render();
+    return Promise.resolve();
+  }
+
+  /* ---------- 상태 메시지 ---------- */
+  var statusTimer = null;
+  function say(msg, tone){
+    var el = $("status");
+    el.textContent = msg;
+    el.setAttribute("data-tone", tone || "");
+    if (statusTimer) clearTimeout(statusTimer);
+    if (tone === "ok") statusTimer = setTimeout(function(){ el.textContent = ""; }, 3200);
+  }
+  function dbMessage(err){
+    var code = (err && err.code) || "";
+    if (code === "quota_exceeded") return "기록이 가득 찼습니다. 오래된 기록을 지운 뒤 다시 저장해 주세요.";
+    if (code === "resource_exhausted") return "요청이 몰렸습니다. 잠시 후 다시 저장해 주세요.";
+    if (code === "revoked" || code === "not_granted") return "저장 권한이 없어 이 브라우저에만 보관됩니다.";
+    if (code === "local_full") return "브라우저 저장 공간이 가득 찼습니다. CSV로 내보낸 뒤 정리해 주세요.";
+    return "저장하지 못했습니다. 다시 시도해 주세요.";
+  }
+
+  /* ---------- 예시 ---------- */
+  function buildSamples(){
+    var base = shiftMonths(today(), -6);
+    var ev = [9820, 10450, 10110, 11320, 11980, 12480];
+    var bean = [3.42, 3.61, 3.88, 3.79, 4.05, 4.21];
+    var list = [];
+    for (var i = 0; i < 6; i++) {
+      var d = shiftMonths(base, i + 1);
+      list.push({ id: "se" + i, date: d, market: "국내 전기차", metric: "월 판매량", value: ev[i], unit: "대",
+                  source: "업계 월간 판매 집계", url: "", note: i === 5 ? "보조금 조기 소진 전 수요가 몰린 것으로 보임." : "",
+                  tags: ["수요"], createdAt: 0 });
+      list.push({ id: "sb" + i, date: d, market: "커피 원두", metric: "아라비카 선물가", value: bean[i], unit: "달러/lb",
+                  source: "선물시장 월말 종가", url: "", note: "", tags: ["가격"], createdAt: 0 });
+    }
+    list.push({ id: "sq", date: shiftMonths(base, 6), market: "국내 전기차", metric: "", value: null, unit: "",
+                source: "경쟁사 발표 자료", url: "",
+                note: "A사 보급형 모델 출시 일정 공개. 하반기 가격 경쟁 가능성 확인 필요.",
+                tags: ["경쟁사"], createdAt: 0 });
+    return list.map(normalize);
+  }
+  var SAMPLES = buildSamples();
+
+  /* ---------- 가공 ---------- */
+  function esc(s){
+    return String(s == null ? "" : s)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+  function hl(s){
+    var safe = esc(s);
+    if (!q) return safe;
+    var needle = esc(q).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return safe.replace(new RegExp(needle, "gi"), function(m){ return "<mark>" + m + "</mark>"; });
+  }
+  function safeUrl(u){ return /^https?:\/\//i.test(u) ? u : ""; }
+
+  function countBy(list, key){
+    var map = {};
+    list.forEach(function(r){ var k = r[key]; if (k) map[k] = (map[k] || 0) + 1; });
+    return Object.keys(map).sort(function(a,b){ return map[b] - map[a] || (a < b ? -1 : 1); })
+      .map(function(k){ return { key: k, n: map[k] }; });
+  }
+
+  function matches(r){
+    if (activeMarket && r.market !== activeMarket) return false;
+    if (!q) return true;
+    var hay = [r.market, r.metric, r.unit, r.source, r.note, (r.tags || []).join(" ")].join(" ").toLowerCase();
+    return hay.indexOf(q.toLowerCase()) !== -1;
+  }
+
+  // 같은 시장 + 같은 지표 + 같은 단위 = 하나의 시계열
+  function buildSeries(list){
+    var map = {};
+    list.forEach(function(r){
+      if (!r.metric || r.value === null) return;
+      var k = JSON.stringify([r.market, r.metric, r.unit]);
+      (map[k] = map[k] || { key: k, market: r.market, metric: r.metric, unit: r.unit, points: [] }).points.push(r);
+    });
+    return Object.keys(map).map(function(k){
+      var s = map[k];
+      s.points.sort(function(a,b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : (a.createdAt || 0) - (b.createdAt || 0); });
+      return s;
+    });
+  }
+
+  /* ---------- 차트 ---------- */
+  function niceTicks(min, max){
+    if (min === max) { var pad0 = Math.abs(min) * 0.1 || 1; min -= pad0; max += pad0; }
+    var span = max - min;
+    var step = Math.pow(10, Math.floor(Math.log10(span / 3)));
+    var err = (span / 3) / step;
+    if (err >= 5) step *= 5; else if (err >= 2) step *= 2;
+    var lo = Math.floor(min / step) * step, hi = Math.ceil(max / step) * step;
+    var ticks = [];
+    for (var v = lo; v <= hi + step / 2; v += step) ticks.push(Number(v.toPrecision(12)));
+    return { lo: lo, hi: hi, ticks: ticks };
+  }
+
+  function chartSVG(s, w, h){
+    var pts = s.points;
+    var padL = 44, padR = 16, padT = 14, padB = 22;
+    var vals = pts.map(function(p){ return p.value; });
+    var t = niceTicks(Math.min.apply(null, vals), Math.max.apply(null, vals));
+    var t0 = parseISO(pts[0].date).getTime(), t1 = parseISO(pts[pts.length - 1].date).getTime();
+    var iw = w - padL - padR, ih = h - padT - padB;
+    function x(p){ return t1 === t0 ? padL + iw / 2 : padL + (parseISO(p.date).getTime() - t0) / (t1 - t0) * iw; }
+    function y(v){ return padT + (1 - (v - t.lo) / (t.hi - t.lo)) * ih; }
+
+    var g = "";
+    t.ticks.forEach(function(v, i){
+      var yy = y(v).toFixed(1);
+      g += '<line class="' + (i === 0 ? "baseline" : "gridline") + '" x1="' + padL + '" x2="' + (w - padR) + '" y1="' + yy + '" y2="' + yy + '"/>';
+      g += '<text class="axis" x="' + (padL - 6) + '" y="' + yy + '" dy="3.5" text-anchor="end">' + esc(compact(v)) + '</text>';
+    });
+    g += '<text class="axis" x="' + padL + '" y="' + (h - 5) + '" text-anchor="start">' + esc(shortDate(pts[0].date)) + '</text>';
+    if (pts.length > 1) g += '<text class="axis" x="' + (w - padR) + '" y="' + (h - 5) + '" text-anchor="end">' + esc(shortDate(pts[pts.length - 1].date)) + '</text>';
+
+    var coords = pts.map(function(p){ return [x(p), y(p.value)]; });
+    if (coords.length > 1) {
+      g += '<path class="line" d="' + coords.map(function(c, i){ return (i ? "L" : "M") + c[0].toFixed(1) + " " + c[1].toFixed(1); }).join("") + '"/>';
+    }
+    // 점이 촘촘하면 끝점만 표시
+    var showDots = iw / Math.max(1, pts.length) >= 14;
+    coords.forEach(function(c, i){
+      var last = i === coords.length - 1;
+      if (showDots || last) g += '<circle class="' + (last ? "dot-last" : "dot") + '" cx="' + c[0].toFixed(1) + '" cy="' + c[1].toFixed(1) + '" r="' + (last ? 4.5 : 3.5) + '"/>';
+    });
+    g += '<line class="cross" x1="0" x2="0" y1="' + padT + '" y2="' + (padT + ih) + '" visibility="hidden"/>';
+    g += '<rect class="hit" x="' + padL + '" y="0" width="' + iw + '" height="' + h + '"/>';
+    return { svg: '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' + esc(s.market + " " + s.metric + " 추이") + '">' + g + '</svg>', coords: coords };
+  }
+
+  function compact(v){
+    var a = Math.abs(v);
+    if (a >= 1e8) return fmt(v / 1e8) + "억";
+    if (a >= 1e4) return fmt(v / 1e4) + "만";
+    return fmt(v);
+  }
+
+  var chartState = {};  // key -> {coords, points, unit}
+
+  function drawCharts(){
+    chartState = {};
+    Array.prototype.forEach.call(document.querySelectorAll(".chart[data-key]"), function(el){
+      var key = el.getAttribute("data-key");
+      var s = seriesByKey[key];
+      if (!s) return;
+      var w = Math.max(200, Math.round(el.clientWidth));
+      var out = chartSVG(s, w, el.clientHeight || 150);
+      el.innerHTML = out.svg + '<div class="tip" hidden></div>';
+      chartState[key] = { coords: out.coords, s: s };
+    });
+  }
+
+  function hover(el, clientX){
+    var st = chartState[el.getAttribute("data-key")];
+    if (!st) return;
+    var box = el.getBoundingClientRect();
+    var mx = clientX - box.left;
+    var best = 0, bd = Infinity;
+    st.coords.forEach(function(c, i){ var d = Math.abs(c[0] - mx); if (d < bd) { bd = d; best = i; } });
+    var c = st.coords[best], p = st.s.points[best];
+    var cross = el.querySelector(".cross");
+    cross.setAttribute("x1", c[0]); cross.setAttribute("x2", c[0]); cross.setAttribute("visibility", "visible");
+    var tip = el.querySelector(".tip");
+    var prev = best > 0 ? st.s.points[best - 1] : null;
+    tip.innerHTML = '<div class="s">' + esc(p.date) + '</div><b>' + esc(fmt(p.value)) + '</b> ' + esc(p.unit) +
+      (prev ? ' <span class="s">(' + esc(signed(p.value - prev.value)) + ')</span>' : '') +
+      (p.source ? '<div class="s">' + esc(p.source) + '</div>' : '');
+    tip.hidden = false;
+    var half = tip.offsetWidth / 2;
+    tip.style.left = Math.min(Math.max(c[0], half), box.width - half) + "px";
+    tip.style.top = c[1] + "px";
+  }
+  function unhover(el){
+    var cross = el.querySelector(".cross"); if (cross) cross.setAttribute("visibility", "hidden");
+    var tip = el.querySelector(".tip"); if (tip) tip.hidden = true;
+  }
+
+  /* ---------- 렌더 ---------- */
+  var seriesByKey = {};
+
+  function render(){
+    var isSample = records.length === 0;
+    var source = isSample ? SAMPLES : records;
+    var base = isSample ? [] : records;
+
+    // 통계 — 예시일 때는 0으로 정직하게
+    var ym = today().slice(0, 7);
+    $("stat-total").textContent = base.length;
+    $("stat-series").textContent = buildSeries(base).length;
+    $("stat-month").textContent = base.filter(function(r){ return r.date.slice(0, 7) === ym; }).length;
+    if (base.length) {
+      var ds = base.map(function(r){ return r.date; }).sort();
+      $("stat-span").textContent = spanLabel(ds[0], ds[ds.length - 1]);
+    } else {
+      $("stat-span").textContent = "–";
+    }
+
+    // 자동 완성 — 이름을 똑같이 적어야 한 시계열로 묶인다
+    fillList("market-list", countBy(base, "market"));
+    fillList("metric-list", countBy(base, "metric"));
+    fillList("unit-list", countBy(base, "unit"));
+    fillList("source-list", countBy(base, "source"));
+
+    // 시장 필터
+    var markets = countBy(source, "market");
+    if (activeMarket && !markets.some(function(m){ return m.key === activeMarket; })) activeMarket = null;
+    $("market-filters").innerHTML = markets.length > 1 ? markets.map(function(m){
+      return '<button type="button" class="chip" data-market="' + esc(m.key) + '" aria-pressed="' +
+        (activeMarket === m.key ? "true" : "false") + '">' + esc(m.key) + '<span class="n">' + m.n + '</span></button>';
+    }).join("") : "";
+
+    $("tab-trend").setAttribute("aria-selected", view === "trend" ? "true" : "false");
+    $("tab-log").setAttribute("aria-selected", view === "log" ? "true" : "false");
+
+    var shown = source.filter(matches);
+    var html = view === "trend" ? renderTrend(shown, isSample) : renderLog(shown, isSample);
+    if (isSample) {
+      html += '<div class="sample-note"><span class="badge">예시</span>' +
+        '<span>화면을 보여 주려고 넣은 예시 수치입니다. 첫 기록을 저장하면 사라집니다.</span></div>';
+    }
+    $("view").innerHTML = html;
+    drawCharts();
+  }
+
+  function fillList(id, items){
+    $(id).innerHTML = items.slice(0, 40).map(function(i){ return '<option value="' + esc(i.key) + '">'; }).join("");
+  }
+
+  function renderTrend(list, isSample){
+    var series = buildSeries(list);
+    seriesByKey = {};
+    series.forEach(function(s){ seriesByKey[s.key] = s; });
+    if (!series.length) {
+      return '<p class="empty">' + (q || activeMarket
+        ? "조건에 맞는 지표가 없습니다. 검색어나 시장을 바꿔 보세요."
+        : "아직 추적 중인 지표가 없습니다. 지표 이름과 값을 함께 적으면 여기에 추이가 쌓입니다.") + '</p>';
+    }
+    var groups = {};
+    series.forEach(function(s){ (groups[s.market || "(시장 미지정)"] = groups[s.market || "(시장 미지정)"] || []).push(s); });
+    var names = Object.keys(groups).sort(function(a,b){ return groups[b].length - groups[a].length || (a < b ? -1 : 1); });
+
+    return names.map(function(name){
+      var ss = groups[name].sort(function(a,b){ return a.metric < b.metric ? -1 : 1; });
+      return '<div class="market-head"><h3>' + hl(name) + '</h3><span class="count">지표 ' + ss.length + '개</span></div>' +
+        '<div class="series-grid">' + ss.map(function(s){ return seriesCard(s, isSample); }).join("") + '</div>';
+    }).join("");
+  }
+
+  function seriesCard(s, isSample){
+    var pts = s.points, last = pts[pts.length - 1], prev = pts.length > 1 ? pts[pts.length - 2] : null, first = pts[0];
+    var delta = "";
+    if (prev) {
+      var d = last.value - prev.value;
+      var pct = prev.value !== 0 ? " (" + signed(d / Math.abs(prev.value) * 100) + "%)" : "";
+      delta += '<span>' + (d > 0 ? "▲ " : d < 0 ? "▼ " : "") + esc(signed(d) + pct) + '</span> <span class="since">직전 대비</span>';
+    }
+    if (pts.length > 2) {
+      var dt = last.value - first.value;
+      var pt = first.value !== 0 ? " (" + signed(dt / Math.abs(first.value) * 100) + "%)" : "";
+      delta += ' · <span>' + esc(signed(dt) + pt) + '</span> <span class="since">처음 대비</span>';
+    }
+    var open = !!openTables[s.key];
+    var table = open ? '<table class="series-table"><thead><tr><th>기준일</th><th class="num">값</th><th class="num">변화</th><th>출처</th></tr></thead><tbody>' +
+      pts.slice().reverse().map(function(p, i, arr){
+        var before = arr[i + 1];
+        var link = safeUrl(p.url);
+        return '<tr><td class="num" style="text-align:left">' + esc(p.date) + '</td><td class="num">' + esc(fmt(p.value)) + '</td>' +
+          '<td class="num">' + (before ? esc(signed(p.value - before.value)) : "") + '</td>' +
+          '<td class="src">' + (link ? '<a href="' + esc(link) + '" target="_blank" rel="noopener">' + esc(p.source || "링크") + '</a>' : esc(p.source)) + '</td></tr>';
+      }).join("") + '</tbody></table>' : "";
+
+    return '<article class="series"' + (isSample ? ' data-sample="1"' : '') + '>' +
+      '<div class="series-top"><div><p class="series-name">' + hl(s.metric) + '</p>' +
+      '<span class="series-span">' + esc(shortDate(first.date)) + (pts.length > 1 ? " – " + esc(shortDate(last.date)) : "") + ' · ' + pts.length + '회 측정</span></div>' +
+      '<button type="button" class="series-toggle" data-table="' + esc(s.key) + '" aria-expanded="' + open + '">' + (open ? "차트" : "표") + '</button></div>' +
+      '<div class="hero"><span class="v">' + esc(fmt(last.value)) + '</span><span class="u">' + esc(s.unit) + '</span></div>' +
+      (delta ? '<div class="delta">' + delta + '</div>' : '') +
+      (open ? table : '<div class="chart" data-key="' + esc(s.key) + '"></div>') +
+      '</article>';
+  }
+
+  function renderLog(list, isSample){
+    var shown = sortRecords(list);
+    if (!shown.length) {
+      return '<p class="empty">' + (q || activeMarket ? "조건에 맞는 기록이 없습니다. 검색어나 시장을 바꿔 보세요."
+                                              : "아직 기록이 없습니다. 왼쪽에서 첫 조사 기록을 적어 보세요.") + '</p>';
+    }
+    var groups = [], cur = null;
+    shown.forEach(function(r){
+      var m = r.date.slice(0, 7);
+      if (!cur || cur.m !== m) { cur = { m: m, items: [] }; groups.push(cur); }
+      cur.items.push(r);
+    });
+    return groups.map(function(g){
+      return '<div class="monthgroup"><div class="monthhead"><span class="d">' + esc(monthLabel(g.m)) + '</span>' +
+        '<span class="count">' + g.items.length + '건</span></div>' +
+        g.items.map(function(r){
+          var link = safeUrl(r.url);
+          var src = r.source || link
+            ? '<div class="src">출처 · ' + (link ? '<a href="' + esc(link) + '" target="_blank" rel="noopener">' + hl(r.source || link) + '</a>' : hl(r.source)) + '</div>'
+            : "";
+          return '<article class="entry"' + (isSample ? ' data-sample="1"' : '') + '>' +
+            '<div class="when">' + esc(r.date) + '</div><div>' +
+            '<div class="what"><span class="mk">' + hl(r.market || "(시장 미지정)") + '</span>' +
+            (r.metric ? '<h3>' + hl(r.metric) + '</h3>' : '') +
+            (r.value !== null ? '<span class="val">' + esc(fmt(r.value)) + ' ' + hl(r.unit) + '</span>' : '') + '</div>' +
+            (r.note ? '<p class="text">' + hl(r.note) + '</p>' : '') + src +
+            '<div class="entry-meta">' +
+            (r.tags || []).map(function(t){ return '<span class="tag">' + esc(t) + '</span>'; }).join("") +
+            '<span class="entry-actions">' +
+            '<button type="button" data-copy="' + esc(r.id) + '">이어 적기</button>' +
+            '<button type="button" data-edit="' + esc(r.id) + '">수정</button>' +
+            '<button type="button" class="del" data-del="' + esc(r.id) + '">삭제</button>' +
+            '</span></div></div></article>';
+        }).join("") + '</div>';
+    }).join("");
+  }
+
+  /* ---------- 작성 동작 ---------- */
+  function parseTags(s){
+    return String(s || "").split(/[,·;]/).map(function(t){ return t.trim(); })
+      .filter(function(t){ return t.length; }).slice(0, 8);
+  }
+
+  function fillComposer(r){
+    $("date-input").value = r.date;
+    $("market-input").value = r.market || "";
+    $("metric-input").value = r.metric || "";
+    $("value-input").value = r.value === null ? "" : String(r.value);
+    $("unit-input").value = r.unit || "";
+    $("source-input").value = r.source || "";
+    $("url-input").value = r.url || "";
+    $("note-input").value = r.note || "";
+    $("tags-input").value = (r.tags || []).join(", ");
+  }
+
+  function resetComposer(){
+    editingId = null;
+    $("composer").removeAttribute("data-editing");
+    $("composer-title").textContent = "조사 기록 추가";
+    $("save-btn").textContent = "기록 저장";
+    $("cancel-edit").hidden = true;
+    fillComposer(normalize({ date: today() }));
+  }
+
+  function find(id){ return records.filter(function(r){ return r.id === id; })[0]; }
+
+  function startEdit(id){
+    var r = find(id);
+    if (!r) return;
+    editingId = id;
+    $("composer").setAttribute("data-editing", "1");
+    $("composer-title").textContent = "기록 수정";
+    $("save-btn").textContent = "수정 저장";
+    $("cancel-edit").hidden = false;
+    fillComposer(r);
+    $("value-input").focus();
+    if (window.innerWidth <= 900) $("composer").scrollIntoView({ block: "start" });
+  }
+
+  // 같은 지표의 다음 측정값을 빠르게 적도록 이름 · 단위 · 출처만 채워 둔다
+  function continueFrom(id){
+    var r = find(id);
+    if (!r) return;
+    resetComposer();
+    fillComposer(normalize({ date: today(), market: r.market, metric: r.metric, unit: r.unit,
+                             source: r.source, url: r.url, tags: r.tags }));
+    $("value-input").focus();
+    if (window.innerWidth <= 900) $("composer").scrollIntoView({ block: "start" });
+    say("이전 기록의 시장 · 지표 · 출처를 불러왔습니다. 새 값을 적어 주세요.");
+  }
+
+  function save(){
+    var market = $("market-input").value.trim();
+    var metric = $("metric-input").value.trim();
+    var note = $("note-input").value.trim();
+    var value = parseValue($("value-input").value);
+    var date = $("date-input").value || today();
+
+    if (!market) { say("시장 · 주제를 입력해 주세요.", "err"); $("market-input").focus(); return; }
+    if (value !== null && isNaN(value)) { say("값은 숫자로 적어 주세요. 예) 12480 또는 3.5", "err"); $("value-input").focus(); return; }
+    if (value !== null && !metric) { say("값을 적었다면 어떤 지표인지도 적어 주세요.", "err"); $("metric-input").focus(); return; }
+    if (value === null && !note) { say("값이나 메모 중 하나는 적어 주세요.", "err"); $("value-input").focus(); return; }
+    if (!isISO(date)) { say("기준일을 확인해 주세요.", "err"); return; }
+
+    var now = Date.now();
+    var prev = editingId ? find(editingId) : null;
+    var rec = normalize({
+      id: editingId || newId(), date: date, market: market, metric: metric, value: value,
+      unit: $("unit-input").value, source: $("source-input").value, url: $("url-input").value,
+      note: note, tags: parseTags($("tags-input").value),
+      createdAt: prev ? (prev.createdAt || now) : now, updatedAt: now
+    });
+    var wasEditing = !!editingId;
+
+    $("save-btn").disabled = true;
+    say("저장 중…");
+    putMany([rec]).then(function(){
+      resetComposer();
+      say(wasEditing ? "수정했습니다." : "저장했습니다.", "ok");
+    }).catch(function(err){
+      say(dbMessage(err), "err");
+    }).then(function(){
+      $("save-btn").disabled = false;
+    });
+  }
+
+  /* ---------- CSV ---------- */
+  var CSV_COLS = ["date","market","metric","value","unit","source","url","note","tags","id"];
+
+  function csvCell(v){
+    var s = String(v == null ? "" : v);
+    return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  function exportCSV(){
+    if (!records.length) { say("내보낼 기록이 없습니다.", "err"); return; }
+    var rows = [CSV_COLS.join(",")].concat(sortRecords(records).reverse().map(function(r){
+      return [r.date, r.market, r.metric, r.value === null ? "" : r.value, r.unit, r.source, r.url, r.note,
+              (r.tags || []).join("; "), r.id].map(csvCell).join(",");
+    }));
+    var blob = new Blob(["﻿" + rows.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "market-research-" + today() + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    say(records.length + "건을 CSV로 내보냈습니다.", "ok");
+  }
+
+  function parseCSV(text){
+    var rows = [], row = [], cell = "", i = 0, inQ = false;
+    text = text.replace(/^﻿/, "");
+    while (i < text.length) {
+      var ch = text[i];
+      if (inQ) {
+        if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else inQ = false; }
+        else cell += ch;
+      } else if (ch === '"') inQ = true;
+      else if (ch === ",") { row.push(cell); cell = ""; }
+      else if (ch === "\n" || ch === "\r") {
+        if (ch === "\r" && text[i + 1] === "\n") i++;
+        row.push(cell); rows.push(row); row = []; cell = "";
+      } else cell += ch;
+      i++;
+    }
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    return rows.filter(function(r){ return r.some(function(c){ return c.trim(); }); });
+  }
+
+  function importCSV(text){
+    var rows = parseCSV(text);
+    if (rows.length < 2) { say("CSV에 기록이 없습니다.", "err"); return; }
+    var head = rows[0].map(function(h){ return h.trim().toLowerCase(); });
+    var idx = {};
+    CSV_COLS.forEach(function(c){ idx[c] = head.indexOf(c); });
+    if (idx.date < 0 || idx.market < 0) { say("CSV 첫 줄에 date, market 열이 있어야 합니다.", "err"); return; }
+
+    var now = Date.now(), ok = [], skipped = 0;
+    rows.slice(1).forEach(function(r, n){
+      function get(c){ return idx[c] >= 0 ? (r[idx[c]] || "").trim() : ""; }
+      var date = get("date"), market = get("market"), value = parseValue(get("value"));
+      if (!isISO(date) || !market || (value !== null && isNaN(value))) { skipped++; return; }
+      var id = get("id").replace(/[^\w-]/g, "") || newId();
+      var prev = find(id);
+      ok.push(normalize({
+        id: id, date: date, market: market, metric: get("metric"), value: value, unit: get("unit"),
+        source: get("source"), url: get("url"), note: get("note"), tags: parseTags(get("tags")),
+        createdAt: prev ? prev.createdAt : now + n, updatedAt: now
+      }));
+    });
+    if (!ok.length) { say("가져올 수 있는 줄이 없습니다. 날짜는 YYYY-MM-DD 형식이어야 합니다.", "err"); return; }
+    say("가져오는 중…");
+    putMany(ok).then(function(){
+      say(ok.length + "건을 가져왔습니다." + (skipped ? " 형식이 맞지 않는 " + skipped + "줄은 건너뛰었습니다." : ""), "ok");
+    }).catch(function(err){ say(dbMessage(err), "err"); });
+  }
+
+  /* ---------- 이벤트 ---------- */
+  $("save-btn").addEventListener("click", save);
+  $("cancel-edit").addEventListener("click", function(){ resetComposer(); say(""); });
+
+  document.addEventListener("keydown", function(ev){
+    if ((ev.metaKey || ev.ctrlKey) && ev.key === "Enter") { ev.preventDefault(); save(); }
+    if (ev.key === "Escape" && editingId) { resetComposer(); say(""); }
+  });
+
+  $("search-input").addEventListener("input", function(ev){ q = ev.target.value.trim(); render(); });
+
+  $("market-filters").addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-market]");
+    if (!b) return;
+    var m = b.getAttribute("data-market");
+    activeMarket = activeMarket === m ? null : m;
+    render();
+  });
+
+  document.querySelector(".tabs").addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-view]");
+    if (!b) return;
+    view = b.getAttribute("data-view");
+    try { window.localStorage.setItem(LS_VIEW, view); } catch (e) {}
+    render();
+  });
+
+  $("export-btn").addEventListener("click", exportCSV);
+  $("import-btn").addEventListener("click", function(){ $("import-file").click(); });
+  $("import-file").addEventListener("change", function(ev){
+    var f = ev.target.files && ev.target.files[0];
+    if (!f) return;
+    var reader = new FileReader();
+    reader.onload = function(){ importCSV(String(reader.result || "")); };
+    reader.onerror = function(){ say("파일을 읽지 못했습니다.", "err"); };
+    reader.readAsText(f, "utf-8");
+    ev.target.value = "";
+  });
+
+  var viewEl = $("view");
+  viewEl.addEventListener("click", function(ev){
+    var t = ev.target.closest("[data-table]");
+    if (t) { var k = t.getAttribute("data-table"); openTables[k] = !openTables[k]; render(); return; }
+    var c = ev.target.closest("[data-copy]");
+    if (c) { continueFrom(c.getAttribute("data-copy")); return; }
+    var e1 = ev.target.closest("[data-edit]");
+    if (e1) { startEdit(e1.getAttribute("data-edit")); return; }
+    var e2 = ev.target.closest("[data-del]");
+    if (e2) {
+      var id = e2.getAttribute("data-del");
+      if (!window.confirm("이 기록을 삭제할까요? 되돌릴 수 없습니다.")) return;
+      if (editingId === id) resetComposer();
+      drop(id).then(function(){ say("삭제했습니다.", "ok"); })
+              .catch(function(err){ say(dbMessage(err), "err"); });
+    }
+  });
+  viewEl.addEventListener("pointermove", function(ev){
+    var el = ev.target.closest(".chart[data-key]");
+    if (el) hover(el, ev.clientX);
+  });
+  viewEl.addEventListener("pointerout", function(ev){
+    var el = ev.target.closest(".chart[data-key]");
+    if (el && !el.contains(ev.relatedTarget)) unhover(el);
+  });
+
+  var resizeTimer = null;
+  window.addEventListener("resize", function(){
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(drawCharts, 120);
+  });
+
+  /* ---------- 시작 ---------- */
+  try { if (window.localStorage.getItem(LS_VIEW) === "log") view = "log"; } catch (e) {}
+  resetComposer();
+  records = sortRecords(localRead());
+  render();
+  $("storage-note").textContent = "이 브라우저에 저장 중";
+
+  if (window.claude && typeof window.claude.use === "function") {
+    window.claude.use("db").then(function(store){
+      if (!store) return;
+      db = store;
+      $("storage-note").textContent = "계정에 저장 중 · 어느 기기에서나 열람";
+      var first = true;
+      db.collection(COLL).orderBy("createdAt", "desc").limit(5000)
+        .onSnapshot(function(snap){
+          var list = snap.docs.map(function(d){
+            return normalize(Object.assign({}, d.data() || {}, { id: d.id }));
+          });
+          // 처음 열었고 서버가 비어 있으면, 이 브라우저에 있던 기록을 한 번만 올린다.
+          if (first && !snap.metadata.fromCache && list.length === 0) {
+            var local = localRead();
+            var migrated = false;
+            try { migrated = window.localStorage.getItem(LS_MIG) === "1"; } catch (e) {}
+            if (local.length && !migrated) {
+              try { window.localStorage.setItem(LS_MIG, "1"); } catch (e) {}
+              local.forEach(function(r){ db.doc(COLL + "/" + r.id).set(body(r)).catch(function(){}); });
+              say("이 브라우저에 있던 기록 " + local.length + "건을 계정으로 옮겼습니다.", "ok");
+            }
+          }
+          if (!snap.metadata.fromCache) first = false;
+          records = sortRecords(list);
+          render();
+        }, function(err){
+          db = null;
+          $("storage-note").textContent = "이 브라우저에 저장 중";
+          say(dbMessage(err), "err");
+        });
+    }).catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
